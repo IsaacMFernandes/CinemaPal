@@ -13,7 +13,12 @@ import com.google.android.material.navigation.NavigationBarView;
 
 /*
 
-Welcome to the main activity
+The Main Activity for CinemaPal
+This activity holds three fragments connected by a bottom navigation view
+
+There is also a method provided that defines what happens when the back button is pressed
+    - If not on home screen -> go to home screen
+    - If on home screen -> exit app
 
  */
 
