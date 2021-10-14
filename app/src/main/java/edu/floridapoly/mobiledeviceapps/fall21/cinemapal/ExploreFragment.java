@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,12 +56,39 @@ public class ExploreFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false);
+        View myView = inflater.inflate(R.layout.fragment_explore, container, false);
+
+
+        ImageButton pic = (ImageButton) myView.findViewById(R.id.explore_movie_img);
+        pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "When the user taps the film picture or title, they will be taken to a popup screen showing more info about the film: synopsis, director, actors, etc", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button left = (Button) myView.findViewById(R.id.swipe_left);
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "When the user swipes to the left, the movie is thrown out and they are shown a new one", Toast.LENGTH_LONG).show();
+            }
+        });
+        Button right = (Button) myView.findViewById(R.id.swipe_right);
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "When the user swipes to the right, the movie is added to their list and they are shown a new one", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return myView;
     }
 }
