@@ -1,15 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sort by"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/movie_item" />
+
+    </ScrollView>
+
+</RelativeLayout>-->
+
+
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
-    android:gravity="center"
+    android:gravity="top"
+    android:orientation="vertical"
     android:background="@android:color/holo_blue_light">
 
     <TextView
+        android:id="@+id/home_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home screen" />
+    android:text="Home - My Movies"
+    android:paddingVertical="20dp"
+    android:textSize="34sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/movie_img"
+            android:layout_width="110dp"
+            android:layout_height="105dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_people_black_24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/sort_button"
+            android:layout_width="109dp"
+            android:layout_height="37dp"
+            android:layout_marginEnd="8dp"
+            android:text="Sort by..."
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movie Title"
+            app:layout_constraintStart_toEndOf="@+id/movie_img"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movie_synopsis"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="24dp"
+            android:text="Synopsis..."
+            android:textColor="#505050"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sort_button"
+            app:layout_constraintStart_toEndOf="@+id/movie_img"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title" />
+
+        <TextView
+            android:id="@+id/movie_friend_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="! On [friend]'s list"
+            android:textColor="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/movie_img"
+            app:layout_constraintTop_toBottomOf="@+id/movie_synopsis" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

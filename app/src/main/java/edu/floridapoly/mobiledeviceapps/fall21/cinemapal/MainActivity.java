@@ -4,12 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 
@@ -22,7 +29,8 @@ There is also a method provided that defines what happens when the back button i
 
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     // This variable will be used to call methods relating to the bottom navigation view
     private BottomNavigationView bottomNav;
@@ -47,11 +55,29 @@ public class MainActivity extends AppCompatActivity {
         // Setting a listener for when a bottom item is selected
         bottomNav.setOnItemSelectedListener(navListener);
 
+        /*
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                if (direction == ItemTouchHelper.LEFT)
+                    Toast.makeText(MainActivity.this, "Swiped Left", Toast.LENGTH_SHORT).show();
+                else if (direction == ItemTouchHelper.RIGHT)
+                    Toast.makeText(MainActivity.this, "Swiped Right", Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
     }
 
     // Implementation of the bottom navigation view
     private NavigationBarView.OnItemSelectedListener navListener =
-            new NavigationBarView.OnItemSelectedListener() {
+            new NavigationBarView.OnItemSelectedListener()
+            {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item)
                 {
@@ -101,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
     // Method to open a given fragment
     private void openFragment(Fragment fragment)
     {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        getSupportFragmentManager().beginTransaction()
+        .replace(R.id.fragment_container, fragment)
+        .addToBackStack(null)
+        .commit();
     }
 }
