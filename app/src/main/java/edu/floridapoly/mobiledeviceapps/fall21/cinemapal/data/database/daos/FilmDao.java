@@ -1,5 +1,6 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -26,4 +27,7 @@ public interface FilmDao extends BaseDao<Film>
     @Transaction
     @Query("SELECT * FROM film")
     public List<FilmCast> getFilmCast();
+
+    @Query("SELECT * FROM film")
+    public List<Film> getFilms();
 }

@@ -25,24 +25,26 @@ public class CinemaPalRepository
     private CelebrityDao celebrityDao;
 
     // Live data of user's liked films
-    LiveData<List<LikedFilms>> likedFilms;
+    //LiveData<List<LikedFilms>> likedFilms;
 
     public CinemaPalRepository(Application application)
     {
         CinemaPalDatabase database = CinemaPalDatabase.getInstance(application);
         service = Executors.newSingleThreadExecutor();
 
-        likedFilms = userDao.getLikedFilms();
+        //likedFilms = userDao.getLikedFilms();
         userDao = database.userDao();
         filmDao = database.filmDao();
         celebrityDao = database.celebrityDao();
     }
 
     // Return a live data list of users, each with a playlist of liked films
-    public LiveData<List<LikedFilms>> getLikedFilms()
-    {
-        return likedFilms;
-    }
+    //public LiveData<List<LikedFilms>> getLikedFilms()
+    //{
+        //return likedFilms;
+    //}
+
+    public List<Film> getFilms() { return filmDao.getFilms(); }
 
     // Returns a film that has the primary key provided
     public Film findFilmById(int filmId)

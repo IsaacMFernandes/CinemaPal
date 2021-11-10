@@ -1,10 +1,16 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.daos.*;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.*;
@@ -27,26 +33,37 @@ public abstract class CinemaPalDatabase extends RoomDatabase
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     CinemaPalDatabase.class, "cinema_pal_database")
                     .fallbackToDestructiveMigration()
-                    // to populate database .addCallback(roomCallback)
+                    .addCallback(roomCallback)
+                    .allowMainThreadQueries()
                     .build();
         }
         return instance;
     }
 
-    /*
-    Populate the database
     public static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Populate database here (ie. userDao.insert(new User("name"));)
-                }
-            });
+            new PopulateDbAsyncTask(instance).execute();
+        }
+    };
+
+    public static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>
+    {
+        private FilmDao filmDao;
+
+        private PopulateDbAsyncTask(CinemaPalDatabase db)
+        {
+            filmDao = db.filmDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void...Voids)
+        {
+            filmDao.insert(new Film("Shangchi", "Superhero movie", "Marvel Studios", (short) 10));
+            filmDao.insert(new Film("Finding Nemo", "Fish gets lost", "Idk Disney", (short) 8));
+            filmDao.insert(new Film("Hallmark movie", "People fall in love", "Hallmark", (short) 4));
+            return null;
         }
     }
-    */
 }
