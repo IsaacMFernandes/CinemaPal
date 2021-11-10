@@ -18,7 +18,7 @@ public interface UserDao extends BaseDao<User>
 
 
     // Retrieve list of liked films
-    @Transaction
-    @Query("SELECT * FROM User")
-    public LiveData<List<LikedFilms>> getLikedFilms();
+    //@Transaction
+    //@Query("SELECT * FROM User")
+    //public LiveData<List<LikedFilms>> getLikedFilms();
 }

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
 /*
 
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     // This variable will be used to call methods relating to the bottom navigation view
     private BottomNavigationView bottomNav;
 
+    // View Model
+    //private CinemaPalViewModel viewModel;
 
     // A method to define what happens when the main activity is created
     @Override
@@ -47,13 +53,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         // Set the initial fragment/screen as the home screen
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, HomeFragment.newInstance("","")).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, HomeFragment.newInstance()).commit();
 
         // Initializing the bottom navigation view object
         bottomNav = findViewById(R.id.bottom_nav_view);
 
         // Setting a listener for when a bottom item is selected
         bottomNav.setOnItemSelectedListener(navListener);
+        //viewModel = new ViewModelProvider(this).get(CinemaPalViewModel.class);
 
         /*
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -87,7 +94,7 @@ public class MainActivity extends AppCompatActivity
                         // The home button was pressed
                         case R.id.nav_home:
                             // Call the openFragment method that we created, and create a home fragment instance
-                            openFragment(HomeFragment.newInstance("",""));
+                            openFragment(HomeFragment.newInstance());
                             return true;
 
                         // The explore button was pressed
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         else
             // The user is not on the home screen, go to the home screen
-            openFragment(HomeFragment.newInstance("",""));
+            openFragment(HomeFragment.newInstance());
 
         // Making sure the home item in the navigation view is highlighted
         bottomNav.setSelectedItemId(bottomNav.getMenu().getItem(0).getItemId());
