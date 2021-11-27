@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "896089281811",
+    "project_id": "cinemapal-14965",
+    "storage_bucket": "cinemapal-14965.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896089281811:android:8354f0e080f32bef36b6e6",
+        "android_client_info": {
+          "package_name": "edu.floridapoly.mobiledeviceapps.fall21.cinemapal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896089281811-omddu2rf38hnane2prr3mrutnhivbesc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOiZqfpJhAK1Xy0mH7iPHXpYSn6jIyDts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896089281811-omddu2rf38hnane2prr3mrutnhivbesc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
