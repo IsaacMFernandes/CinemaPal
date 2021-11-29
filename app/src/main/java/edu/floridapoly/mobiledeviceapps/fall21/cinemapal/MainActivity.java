@@ -11,11 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +42,7 @@ There is also a method provided that defines what happens when the back button i
 
 public class MainActivity extends AppCompatActivity
 {
+    private static final String TAG = "MainActivity";
 
     // This variable will be used to call methods relating to the bottom navigation view
     private BottomNavigationView bottomNav;
@@ -93,6 +101,21 @@ public class MainActivity extends AppCompatActivity
                     {
                         // The home button was pressed
                         case R.id.nav_home:
+                            Log.d(TAG, "navhome");
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("users")
+                                    .whereEqualTo("username", "Joseph")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            Log.d(TAG, "DB connnection!");
+                                            for(QueryDocumentSnapshot document : task.getResult()) {
+                                                Log.d(TAG, document.getData().toString());
+                                            }
+                                        }
+                                    });
+
                             // Call the openFragment method that we created, and create a home fragment instance
                             openFragment(HomeFragment.newInstance());
                             return true;
