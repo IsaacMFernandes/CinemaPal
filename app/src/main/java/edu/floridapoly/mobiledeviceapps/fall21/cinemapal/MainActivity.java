@@ -10,9 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,6 +93,23 @@ public class MainActivity extends AppCompatActivity
         */
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String username = pref.getString("userId", "");
+        if(username.isEmpty()) {
+            Intent login = new Intent(this, LoginActivity.class);
+            startActivity(login);
+        }
+    }
+
+    public void clickedGotoLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     // Implementation of the bottom navigation view
     private NavigationBarView.OnItemSelectedListener navListener =
             new NavigationBarView.OnItemSelectedListener()
@@ -101,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                     {
                         // The home button was pressed
                         case R.id.nav_home:
-                            Log.d(TAG, "navhome");
+                            /*Log.d(TAG, "navhome");
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             db.collection("users")
                                     .whereEqualTo("username", "Joseph")
@@ -114,7 +135,7 @@ public class MainActivity extends AppCompatActivity
                                                 Log.d(TAG, document.getData().toString());
                                             }
                                         }
-                                    });
+                                    });*/
 
                             // Call the openFragment method that we created, and create a home fragment instance
                             openFragment(HomeFragment.newInstance());
