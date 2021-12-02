@@ -10,7 +10,7 @@ public abstract class CallbackTask<T> {
         void onFailure(Exception e);
     }
     public interface Join<T, U> {
-        CallbackTask<U> join(T result);
+        CallbackTask<U> join(T result) throws Exception;
     }
     public interface Map<T, U> {
         U map(T result) throws Exception;
@@ -71,9 +71,16 @@ public abstract class CallbackTask<T> {
         JoinTask<T, U> task = new JoinTask<>();
         task.original = this;
 
-        this.setOnSuccessListener(result -> join.join(result)
-                .setOnSuccessListener(task::callOnSuccess)
-                .execute());
+        this.setOnSuccessListener(result -> {
+            try {
+                join.join(result)
+                        .setOnSuccessListener(task::callOnSuccess)
+                        .execute();
+            }
+            catch(Exception e) {
+                task.onFailure.onFailure(e);
+            }
+        });
         task.setOnFailureListener(this.onFailure);
         this.onFailure = null;
 

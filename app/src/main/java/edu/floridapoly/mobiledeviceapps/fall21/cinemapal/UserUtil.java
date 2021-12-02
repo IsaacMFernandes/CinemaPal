@@ -30,6 +30,21 @@ public class UserUtil {
         return task;
     }
 
+    public static CallbackTask<Void> addLikedFilm(Context context, String filmId) {
+        AddFilmTask task = new AddFilmTask();
+        task.userId = getId(context);
+        task.filmId = filmId;
+        task.filmListName = "likedFilms";
+        return task;
+    }
+    public static CallbackTask<Void> addIgnoredFilm(Context context, String filmId) {
+        AddFilmTask task = new AddFilmTask();
+        task.userId = getId(context);
+        task.filmId = filmId;
+        task.filmListName = "ignoredFilms";
+        return task;
+    }
+
     public static class FilmListTask extends CallbackTask<List<String>> {
         protected String userId;
         protected String filmListName;
@@ -43,6 +58,34 @@ public class UserUtil {
                     .addOnSuccessListener(document -> {
                         List<String> filmIds = (List<String>) document.get(filmListName);
                         callOnSuccess(filmIds);
+                    })
+                    .addOnFailureListener(e -> onFailure.onFailure(e));
+        }
+    }
+
+    public static class AddFilmTask extends CallbackTask<Void> {
+        protected String userId;
+        protected String filmId;
+        protected String filmListName;
+
+        @Override
+        public void execute() {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("users")
+                    .document(userId)
+                    .get()
+                    .addOnSuccessListener(doc -> {
+                        List<String> filmIds = (List<String>)doc.get(filmListName);
+                        if(!filmIds.contains(filmId)) {
+                            filmIds.add(filmId);
+                            db.collection("users")
+                                    .document(userId)
+                                    .update(filmListName, filmIds)
+                                    .addOnSuccessListener((Void) -> callOnSuccess(null))
+                                    .addOnFailureListener(e -> onFailure.onFailure(e));
+                        } else {
+                            callOnSuccess(null);
+                        }
                     })
                     .addOnFailureListener(e -> onFailure.onFailure(e));
         }
