@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -97,15 +98,12 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                             if(query.size() > 1) {
-                                ArrayList<String> ids = new ArrayList();
-                                ArrayList<String> bios = new ArrayList();
+                                ArrayList<UserDocumentAdapter.UserDocument> users = new ArrayList();
                                 for(QueryDocumentSnapshot doc : query) {
-                                    ids.add(doc.getId());
-                                    bios.add(doc.getString("bio"));
+                                    users.add(new UserDocumentAdapter.UserDocument(doc.getId(), username, doc.getString("bio")));
                                 }
                                 Intent intent = new Intent(activity, SelectAccountActivity.class);
-                                intent.putStringArrayListExtra("IDS", ids);
-                                intent.putStringArrayListExtra("BIOS", bios);
+                                intent.putExtra("USERS", (Serializable)users);
                                 activity.startActivityForResult(intent, RESULT_CANCELED);
                                 return;
                             }
