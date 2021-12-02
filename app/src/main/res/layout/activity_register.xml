@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/usernameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="Username"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/bioTextField"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Enter bio here"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameView" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:onClick="clickedRegister"
+        android:text="Register"
+        app:layout_constraintStart_toStartOf="@+id/bioTextField"
+        app:layout_constraintTop_toBottomOf="@+id/bioTextField" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:onClick="clickedCancel"
+        android:text="Cancel"
+        app:layout_constraintEnd_toEndOf="@+id/bioTextField"
+        app:layout_constraintTop_toBottomOf="@+id/bioTextField" />
+</androidx.constraintlayout.widget.ConstraintLayout>
