@@ -94,6 +94,8 @@ public class HomeFragment extends Fragment {
         List<Film> films = viewModel.getFilms();
         filmAdapter.submitList(films);
 
+
+
         //Film film = viewModel.findFilmByTitle("Shangchi");
 
         //title = (TextView) view.findViewById(R.id.movie_title);

@@ -10,15 +10,29 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,9 +41,21 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
@@ -47,10 +73,11 @@ There is also a method provided that defines what happens when the back button i
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
-
+    StringBuffer response;
+    String responseText,name,address,date;
     // This variable will be used to call methods relating to the bottom navigation view
     private BottomNavigationView bottomNav;
-
+    private int count = 0;
     // View Model
     //private CinemaPalViewModel viewModel;
 
@@ -103,12 +130,144 @@ public class MainActivity extends AppCompatActivity
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
         }
+
     }
 
     public void clickedGotoLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
+    ArrayList<String> arrayListCollection = new ArrayList<>();
+    ArrayAdapter<String> adapter;
+    EditText txt; // user input bar
+    String getInput="";
+
+
+
+    android.app.AlertDialog locationDialog(String message) {
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        EditText editTextName1 = new EditText(MainActivity.this);
+        builder.setMessage(message);
+        builder.setTitle("Enter Location: ");
+// titles can be used regardless of a custom layout or not
+        builder.setView(editTextName1);
+        LinearLayout layoutName = new LinearLayout(this);
+        layoutName.setOrientation(LinearLayout.VERTICAL);
+        layoutName.addView(editTextName1); // displays the user input bar
+        builder.setView(layoutName);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                getInput = editTextName1.getText().toString();
+
+
+                dialogInterface.dismiss();
+                //LocationDialog(name + " " + address + " " + date);
+            }
+        });
+        return builder.create();
+    }
+
+
+
+    public void clickedW2W(View view){
+
+        //locationDialog("City");
+
+        TextView title = (TextView) findViewById(R.id.title_text_view);
+        String title1 = title.getText().toString();
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, title1 + " showtime"); // query contains search string
+        startActivity(intent);
+        finish();
+        title1 = "";
+
+    }//clickedW2W
+
+    /*/api
+    public void GetDataFRomWebService(View view) {
+        TextView title;
+        title = findViewById(R.id.title_text_view);
+        String titleString = title.getText().toString();
+        String urlStr = "https://serpapi.com/search.json?q=";
+        urlStr = urlStr + titleString;
+        urlStr = urlStr + "&" + "location=" + getInput;
+        String url = urlStr + "&hl=en&gl=us&api_key=45b0b3f988ac3a81d24803a182a1e57c667e86527a585920e9cb9b0c0b8c2c96";
+        Log.i("URL:", url);
+        new BackgroundWebAccess().execute(url);
+    }
+
+    class BackgroundWebAccess extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            return AccessInternet(objects[0].toString());
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+        }
+
+        protected Void AccessInternet(String urlStr) {
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                int responseCode = urlConnection.getResponseCode();
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    // Reading response from input Stream
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(urlConnection.getInputStream()));
+                    String output;
+                    response = new StringBuffer();
+                    while ((output = in.readLine()) != null) {
+                        response.append(output);
+                    }
+                    in.close();
+                }
+
+                responseText = response.toString();
+                Log.i("WebService", responseText);
+
+                JSONObject jsonResponse = new JSONObject(responseText);
+
+
+
+
+                JSONArray showtimes = jsonResponse.getJSONArray("showtimes");
+                // implement for loop for getting showtimes list data
+                for (int i = 0; i < showtimes.length(); i++) {
+
+                    JSONObject showtime = showtimes.getJSONObject(i);
+                    date = showtime.getString("date");
+                    JSONArray theater = jsonResponse.getJSONArray("theaters");
+                    for (int j = 0; j < showtimes.length(); j++) {
+
+                        JSONObject theaterS = theater.getJSONObject(i);
+                        name =theaterS.getString("name");
+                        address = theaterS.getString("address");
+                    }
+                }
+
+
+
+                // ADD the code to get the latitude and longitude information
+                // ADD the code to get the temp information
+                // ADD the code to get the weather description information
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
+    */
 
     // Implementation of the bottom navigation view
     private NavigationBarView.OnItemSelectedListener navListener =
