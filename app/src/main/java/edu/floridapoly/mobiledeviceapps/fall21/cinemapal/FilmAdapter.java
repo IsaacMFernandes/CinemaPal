@@ -42,6 +42,8 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item, parent, false);
         return new FilmHolder(itemView);
+
+
     }
 
     @Override
