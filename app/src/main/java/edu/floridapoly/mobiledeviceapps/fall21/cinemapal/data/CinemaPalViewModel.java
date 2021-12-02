@@ -77,6 +77,8 @@ public class CinemaPalViewModel extends AndroidViewModel
         repository.insertFilm(film);
     }
 
+    public void insertFilms(Film... film) { repository.insertFilms(film);}
+
     public void updateFilm(Film film)
     {
         repository.updateFilm(film);

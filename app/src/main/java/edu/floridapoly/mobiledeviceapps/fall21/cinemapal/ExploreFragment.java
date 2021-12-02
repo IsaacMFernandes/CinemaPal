@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.
 public class ExploreFragment extends Fragment {
 
     private CinemaPalViewModel viewModel;
-    private TextView titleView;
     private ImageView exploreImage;
     private ArrayList<Film> discoverFilms;
     private SwipeDeck cardDeck;
@@ -56,7 +56,6 @@ public class ExploreFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(CinemaPalViewModel.class);
         exploreImage = view.findViewById(R.id.explore_movie_img);
-        titleView = view.findViewById(R.id.explore_movie_title);
 
         discoverFilms = new ArrayList<>();
         discoverFilms = viewModel.getDiscoverFilms();
@@ -68,12 +67,24 @@ public class ExploreFragment extends Fragment {
         cardDeck.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                Toast.makeText(getContext(), "Card Swiped Left", Toast.LENGTH_SHORT).show();
+                UserUtil.addIgnoredFilm(getContext(), "" + discoverFilms.get(position).getFilmId()).setOnSuccessListener(result -> {
+                    discoverFilms.remove(discoverFilms.get(position));
+                    adapter.setDiscoverFilms(discoverFilms);
+                    Toast.makeText(getContext(), "Ignored", Toast.LENGTH_SHORT).show();
+                }).setOnFailureListener(result -> {
+                    result.printStackTrace();
+                }).execute();
             }
 
             @Override
             public void cardSwipedRight(int position) {
-                Toast.makeText(getContext(), "Card Swiped Right", Toast.LENGTH_SHORT).show();
+                UserUtil.addLikedFilm(getContext(), "" + discoverFilms.get(position).getFilmId()).setOnSuccessListener(result -> {
+                    discoverFilms.remove(discoverFilms.get(position));
+                    adapter.setDiscoverFilms(discoverFilms);
+                    Toast.makeText(getContext(), "Added to liked movies", Toast.LENGTH_SHORT).show();
+                }).setOnFailureListener(result -> {
+                    result.printStackTrace();
+                }).execute();
             }
 
             @Override

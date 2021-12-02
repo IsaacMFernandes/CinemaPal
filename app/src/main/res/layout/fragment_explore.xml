@@ -8,18 +8,9 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <Spinner
-        android:id="@+id/genre_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="50dp"
-        android:spinnerMode="dropdown" />
-
     <com.daprlabs.cardstack.SwipeFrameLayout
-        android:layout_width="318dp"
-        android:layout_height="458dp">
+        android:layout_width="325dp"
+        android:layout_height="500dp">
 
         <com.daprlabs.cardstack.SwipeDeck
             android:id="@+id/swipe_deck"
@@ -32,12 +23,5 @@
             app:rotation_degrees="15"/>
 
     </com.daprlabs.cardstack.SwipeFrameLayout>
-
-    <TextView
-        android:id="@+id/explore_movie_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Movie Title"
-        android:textSize="24sp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

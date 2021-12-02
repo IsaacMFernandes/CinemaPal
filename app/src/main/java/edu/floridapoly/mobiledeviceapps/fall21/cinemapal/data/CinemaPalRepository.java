@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.MainActivity;
+import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.UserUtil;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.CinemaPalDatabase;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.daos.*;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.*;
@@ -122,6 +123,7 @@ public class CinemaPalRepository
 
                         Log.d("ExploreFragment", "Discover Movie result json is " + JSONFilm.toString());
 
+                        int id = JSONFilm.getInt("id");
                         String posterPath = JSONFilm.getString("poster_path");
                         String title = JSONFilm.getString("title");
                         String description = JSONFilm.getString("overview");
@@ -129,19 +131,78 @@ public class CinemaPalRepository
 
                         String imageURL = "https://image.tmdb.org/t/p/w500" + posterPath;
 
+                        Film film = new Film(id, title, description, imageURL, rating);
+
+                        Log.d("ExploreFragment", "Id is " + id);
                         Log.d("ExploreFragment", "Poster Path is " + posterPath);
                         Log.d("ExploreFragment", "Discover Image URL is " + imageURL);
                         Log.d("ExploreFragment", "Discover Movie Title is " + title);
                         Log.d("ExploreFragment", "Discover Movie Description is " + description);
                         Log.d("ExploreFragment", "Discover Movie Rating is " + rating);
 
-                        discoverFilms.add(new Film(title, description, imageURL, rating));
+                        discoverFilms.add(film);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 Log.d("ExploreFragment", "Response is null");
+            }
+
+            return null;
+        }
+    }
+
+    /*public List<Film> getLikedFilms()
+    {
+
+    }*/
+
+    private int searchId;
+    private Film filmFoundFromId;
+
+    public Film getFilmFromId(int id)
+    {
+        searchId = id;
+        new getFilmFromIdAsyncTask().execute();
+    }
+
+    private class getFilmFromIdAsyncTask extends AsyncTask
+    {
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            StringBuffer response = new StringBuffer();
+
+            try {
+                String urlString = "https://api.themoviedb.org/3/movie";
+                urlString += "/" + searchId;
+                urlString += "?api_key=" + API_KEY;
+                URL url = new URL(urlString);
+
+                Log.d("ExploreFragment", "Discover URL is " + urlString);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(5000);
+                conn.setConnectTimeout(5000);
+                conn.setRequestMethod("GET");
+
+                int responseCode = conn.getResponseCode();
+
+                Log.d("ExploreFragment", "Response Code is " + responseCode);
+
+                if (responseCode == HttpURLConnection.HTTP_OK)
+                {
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(conn.getInputStream()));
+
+                    String output;
+
+                    while ((output = in.readLine()) != null)
+                        response.append(output);
+                    in.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             return null;
@@ -179,6 +240,8 @@ public class CinemaPalRepository
     {
         service.execute(() -> filmDao.insert(film));
     }
+
+    public void insertFilms(Film... film) { service.execute(() -> filmDao.insert(film)) ;}
 
     public void updateFilm(Film film)
     {

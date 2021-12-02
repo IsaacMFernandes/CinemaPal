@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -55,7 +56,6 @@ public class DiscoverAdapter extends BaseAdapter
 
         Film film = (Film) getItem(i);
         ImageView image = v.findViewById(R.id.explore_movie_img);
-
         Picasso.get().load(film.getImageURL()).into(image);
 
         return v;

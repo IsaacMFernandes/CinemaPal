@@ -1,6 +1,7 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "film")
@@ -17,6 +18,16 @@ public class Film
     private String title;
     private String description;
     private String imageURL;
+
+    @Ignore
+    public Film(int filmId, String title, String description, String imageURL, double rating)
+    {
+        this.filmId = filmId;
+        this.title = title;
+        this.description = description;
+        this.rating = rating;
+        this.imageURL = imageURL;
+    }
 
     public Film(String title, String description, String imageURL, double rating)
     {

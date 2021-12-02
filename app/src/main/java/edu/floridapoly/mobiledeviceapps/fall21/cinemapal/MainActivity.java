@@ -124,6 +124,13 @@ public class MainActivity extends AppCompatActivity
             startActivity(login);
         }
 
+        UserUtil.getLikedFilms(this).setOnSuccessListener(result -> {
+            for (String id : result)
+            {
+
+            }
+        });
+
     }
 
     public void clickedGotoLogin(View view) {
