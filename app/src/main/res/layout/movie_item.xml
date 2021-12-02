@@ -39,4 +39,17 @@
         android:textSize="18sp"
         android:textAppearance="@style/TextAppearance.AppCompat"/>
 
+    <Button
+        android:id="@+id/button2g"
+        android:layout_width="186dp"
+        android:layout_height="43dp"
+        android:layout_below="@+id/description_text_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="-3dp"
+        android:layout_marginEnd="6dp"
+        android:layout_toEndOf="@+id/movie_poster_image_view"
+        android:onClick="clickedW2W"
+        android:text="Where to watch" />
+
 </RelativeLayout>

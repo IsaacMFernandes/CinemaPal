@@ -1,5 +1,6 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -88,6 +89,8 @@ public class HomeFragment extends Fragment {
 
         List<Film> films = viewModel.getFilms();
         filmAdapter.submitList(films);
+
+
 
         //Film film = viewModel.findFilmByTitle("Shangchi");
 
