@@ -29,92 +29,33 @@ public class SelectAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_account);
 
-        Intent intent = getIntent();
-        ArrayList<String> ids = intent.getStringArrayListExtra("IDS");
-        ArrayList<String> bios = intent.getStringArrayListExtra("BIOS");
-        ArrayList<UserDocument> users = new ArrayList();
-        for(int i = 0; i < ids.size(); i++) {
-            users.add(new UserDocument(ids.get(i), bios.get(i)));
-        }
+        SelectAccountActivity activity = this;
 
         UserDocumentAdapter adapter = new UserDocumentAdapter();
+        adapter.setButtonText("THIS ME");
+
+        Intent intent = getIntent();
+        //noinspection unchecked
+        ArrayList<UserDocumentAdapter.UserDocument> users = (ArrayList<UserDocumentAdapter.UserDocument>)intent.getSerializableExtra("USERS");
         adapter.submitList(users);
+        adapter.setOnClickListener(new UserDocumentAdapter.OnClickListener() {
+            @Override
+            public void onClick(UserDocumentAdapter.UserDocument user, UserDocumentAdapter.UserDocumentHolder holder) {
+
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("userId", user.id);
+                editor.commit();
+
+                activity.setResult(RESULT_OK);
+                activity.finish();
+            }
+        });
+
         RecyclerView recycler = findViewById(R.id.recycler_view);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setHasFixedSize(true);
         recycler.setAdapter(adapter);
     }
 
-    private class UserDocument {
-        String id;
-        String bio;
-
-        public UserDocument(String id, String bio) {
-            this.id = id;
-            this.bio = bio;
-        }
-    }
-
-    private class UserDocumentHolder extends RecyclerView.ViewHolder {
-        TextView bio;
-        Button select;
-
-        public UserDocumentHolder(@NonNull View itemView) {
-            super(itemView);
-            bio = itemView.findViewById(R.id.userBioView);
-            select = itemView.findViewById(R.id.thisMeButton);
-        }
-    }
-
-    private class UserDocumentAdapter extends ListAdapter<UserDocument, UserDocumentHolder> {
-
-        protected UserDocumentAdapter() {
-            super(new DiffUtil.ItemCallback<UserDocument>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull UserDocument oldItem, @NonNull UserDocument newItem) {
-                    return oldItem.id == newItem.id;
-                }
-
-                @Override
-                public boolean areContentsTheSame(@NonNull UserDocument oldItem, @NonNull UserDocument newItem) {
-                    return oldItem.bio.equals(newItem.bio);
-                }
-            });
-        }
-
-        @NonNull
-        @Override
-        public UserDocumentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.user_login_item, parent, false);
-            return new UserDocumentHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull UserDocumentHolder holder, int position) {
-            UserDocument user = getItem(position);
-            holder.bio.setText(user.bio);
-            holder.select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(view.getContext());
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("userId", user.id);
-                    editor.commit();
-
-                    // Close activity.
-                    Context context = view.getContext();
-                    while(context instanceof ContextWrapper) {
-                        if(context instanceof Activity) {
-                            Activity a = (Activity)context;
-                            a.setResult(Activity.RESULT_OK);
-                            a.finish();
-                            break;
-                        }
-                        context = ((ContextWrapper)context).getBaseContext();
-                    }
-                }
-            });
-        }
-    }
 }
