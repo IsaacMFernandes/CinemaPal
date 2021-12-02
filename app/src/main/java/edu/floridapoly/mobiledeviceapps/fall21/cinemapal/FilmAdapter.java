@@ -3,6 +3,7 @@ package edu.floridapoly.mobiledeviceapps.fall21.cinemapal;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,8 +51,30 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
     public void onBindViewHolder(@NonNull FilmHolder holder, int position)
     {
         Film film = getItem(position);
+        String filmId = Integer.toString(film.getFilmId());
+
         holder.title.setText(film.getTitle());
         holder.description.setText(film.getDescription());
+
+        holder.friendListIndicator.setEnabled(false);
+        UserUtil.getFriends(holder.title.getContext())
+                .join(friends -> new CallbackTask<Void>() {
+                    @Override
+                    public void execute() {
+                        for(String friendId : friends) {
+                            UserUtil.getLikedFilmsFor(friendId)
+                                    .map(filmIds -> {
+                                        if(filmIds.contains(filmId)) {
+                                            holder.friendListIndicator.setEnabled(true);
+                                        }
+                                        return null;
+                                    })
+                                    .execute();
+
+                        }
+                    }
+                })
+                .execute();
     }
 
     public Film getFilmAt(int position)
@@ -63,12 +86,14 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
     {
         private TextView title;
         private TextView description;
+        private Button friendListIndicator;
 
         public FilmHolder(@NonNull View itemView)
         {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_text_view);
             description = (TextView) itemView.findViewById(R.id.description_text_view);
+            friendListIndicator = itemView.findViewById(R.id.friend_list_indicator);
             // TODO OnClickListener Implementation
         }
     }

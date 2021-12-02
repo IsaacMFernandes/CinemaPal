@@ -1,5 +1,7 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public abstract class CallbackTask<T> {
@@ -59,7 +61,9 @@ public abstract class CallbackTask<T> {
                 task.callOnSuccess(val);
             }
             catch(Exception e) {
-                task.onFailure.onFailure(e);
+                if(task.onFailure != null)
+                    task.onFailure.onFailure(e);
+                else e.printStackTrace();
             }
         });
         task.setOnFailureListener(this.onFailure);
@@ -73,12 +77,16 @@ public abstract class CallbackTask<T> {
 
         this.setOnSuccessListener(result -> {
             try {
+                Log.d("UserUtil", join.toString());
                 join.join(result)
                         .setOnSuccessListener(task::callOnSuccess)
                         .execute();
             }
             catch(Exception e) {
-                task.onFailure.onFailure(e);
+                if(task.onFailure != null)
+                    task.onFailure.onFailure(e);
+                else
+                    e.printStackTrace();
             }
         });
         task.setOnFailureListener(this.onFailure);
