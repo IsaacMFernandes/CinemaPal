@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserUtil {
@@ -75,7 +76,13 @@ public class UserUtil {
                     .document(userId)
                     .get()
                     .addOnSuccessListener(doc -> {
-                        List<String> filmIds = (List<String>)doc.get(filmListName);
+                        List<String> filmIds;
+                        Object filmIdsObj = doc.get(filmListName);
+                        if(filmIdsObj instanceof List) {
+                            filmIds = (List<String>)filmIdsObj;
+                        } else {
+                            filmIds = new ArrayList<String>();
+                        }
                         if(!filmIds.contains(filmId)) {
                             filmIds.add(filmId);
                             db.collection("users")
