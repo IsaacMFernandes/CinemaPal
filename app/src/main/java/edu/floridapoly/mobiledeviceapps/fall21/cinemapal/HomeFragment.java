@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalViewModel;
@@ -87,10 +88,16 @@ public class HomeFragment extends Fragment {
         FilmAdapter filmAdapter = new FilmAdapter();
         recyclerView.setAdapter(filmAdapter);
 
-        List<Film> films = viewModel.getFilms();
+        List<Film> films = new ArrayList<>();
+        UserUtil.getLikedFilms(getContext()).setOnSuccessListener(result -> {
+            for (String idString : result)
+            {
+                int id = Integer.getInteger(idString);
+                Film film = viewModel.searchFilmFromId(id);
+                films.add(film);
+            }
+        });
         filmAdapter.submitList(films);
-
-
 
         //Film film = viewModel.findFilmByTitle("Shangchi");
 

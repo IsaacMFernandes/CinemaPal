@@ -37,6 +37,8 @@ public class CinemaPalViewModel extends AndroidViewModel
         return likedFilms;
     }*/
 
+    public Film searchFilmFromId(int id) {return repository.searchFilmFromId(id); }
+
     public ArrayList<Film> getDiscoverFilms ()
     {
         return repository.getDiscoverFilms();

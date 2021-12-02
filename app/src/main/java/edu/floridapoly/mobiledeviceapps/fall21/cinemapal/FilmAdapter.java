@@ -3,12 +3,15 @@ package edu.floridapoly.mobiledeviceapps.fall21.cinemapal;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
@@ -42,8 +45,6 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item, parent, false);
         return new FilmHolder(itemView);
-
-
     }
 
     @Override
@@ -52,12 +53,15 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
         Film film = getItem(position);
         holder.title.setText(film.getTitle());
         holder.description.setText(film.getDescription());
+        Picasso.get().load(film.getImageURL()).into(image);
     }
 
     public Film getFilmAt(int position)
     {
         return getItem(position);
     }
+
+    private ImageView image;
 
     class FilmHolder extends RecyclerView.ViewHolder
     {
@@ -69,6 +73,7 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title_text_view);
             description = (TextView) itemView.findViewById(R.id.description_text_view);
+            image = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
             // TODO OnClickListener Implementation
         }
     }

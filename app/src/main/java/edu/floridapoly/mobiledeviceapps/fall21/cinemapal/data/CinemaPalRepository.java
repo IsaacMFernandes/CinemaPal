@@ -161,10 +161,11 @@ public class CinemaPalRepository
     private int searchId;
     private Film filmFoundFromId;
 
-    public Film getFilmFromId(int id)
+    public Film searchFilmFromId(int id)
     {
         searchId = id;
         new getFilmFromIdAsyncTask().execute();
+        return filmFoundFromId;
     }
 
     private class getFilmFromIdAsyncTask extends AsyncTask
@@ -203,6 +204,35 @@ public class CinemaPalRepository
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            if (response != null)
+            {
+                String responseText = response.toString();
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseText);
+
+                    String posterPath = jsonResponse.getString("poster_path");
+                    String title = jsonResponse.getString("title");
+                    String description = jsonResponse.getString("overview");
+                    double rating = jsonResponse.getDouble("vote_average");
+
+                    String imageURL = "https://image.tmdb.org/t/p/w500" + posterPath;
+
+                    Film film = new Film(searchId, title, description, imageURL, rating);
+
+                    Log.d("ExploreFragment", "Searched Poster Path is " + posterPath);
+                    Log.d("ExploreFragment", "Searched Image URL is " + imageURL);
+                    Log.d("ExploreFragment", "Searched Movie Title is " + title);
+                    Log.d("ExploreFragment", "Searched Movie Description is " + description);
+                    Log.d("ExploreFragment", "Searched Movie Rating is " + rating);
+
+                    filmFoundFromId = film;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             return null;
