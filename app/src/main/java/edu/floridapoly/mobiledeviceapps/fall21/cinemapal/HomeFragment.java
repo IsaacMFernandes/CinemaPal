@@ -8,10 +8,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalViewModel;
@@ -87,8 +91,8 @@ public class HomeFragment extends Fragment {
         FilmAdapter filmAdapter = new FilmAdapter();
         recyclerView.setAdapter(filmAdapter);
 
-        List<Film> films = viewModel.getFilms();
-        filmAdapter.submitList(films);
+        filmAdapter.submitList(UserUtil.localFilms);
+        UserUtil.updateLikedFilms(getContext());
 
 
 
