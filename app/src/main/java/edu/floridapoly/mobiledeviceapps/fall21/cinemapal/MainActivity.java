@@ -122,21 +122,6 @@ public class MainActivity extends AppCompatActivity
                     {
                         // The home button was pressed
                         case R.id.nav_home:
-                            /*Log.d(TAG, "navhome");
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("users")
-                                    .whereEqualTo("username", "Joseph")
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            Log.d(TAG, "DB connnection!");
-                                            for(QueryDocumentSnapshot document : task.getResult()) {
-                                                Log.d(TAG, document.getData().toString());
-                                            }
-                                        }
-                                    });*/
-
                             // Call the openFragment method that we created, and create a home fragment instance
                             openFragment(HomeFragment.newInstance());
                             return true;

@@ -11,6 +11,9 @@
         android:theme="@style/Theme.CinemaPal"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="true" />
+        <activity
             android:name=".SelectAccountActivity"
             android:exported="true" />
         <activity

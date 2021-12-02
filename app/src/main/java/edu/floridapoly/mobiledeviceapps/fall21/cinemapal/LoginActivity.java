@@ -124,6 +124,18 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    public void clickedRegister(View view) {
+        EditText usernameField = findViewById(R.id.usernameField);
+        String username = usernameField.getText().toString();
+        if(!validateUsername(username)) {
+            return;
+        }
+
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("USERNAME", username);
+        startActivityForResult(intent, RESULT_CANCELED);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
