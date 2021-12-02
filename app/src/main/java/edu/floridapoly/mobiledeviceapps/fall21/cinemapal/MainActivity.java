@@ -125,8 +125,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = pref.getString("userId", "");
-        if(username.isEmpty()) {
+        String userId = pref.getString("userId", "");
+        if(userId.isEmpty()) {
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
         }
