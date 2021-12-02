@@ -18,15 +18,19 @@ public class UserDocumentAdapter extends ListAdapter<UserDocumentAdapter.UserDoc
     public interface OnClickListener {
         void onClick(UserDocument user, UserDocumentHolder holder);
     }
+    public interface OnBindView {
+        void onBind(UserDocument user, UserDocumentHolder viewHolder);
+    }
 
-    String buttonText = "SELECT";
-    ArrayList<OnClickListener> onClick = new ArrayList();
+    private String buttonText = "SELECT";
+    private ArrayList<OnClickListener> onClick = new ArrayList();
+    private ArrayList<OnBindView> onBind = new ArrayList();
 
     public UserDocumentAdapter() {
         super(new DiffUtil.ItemCallback<UserDocument>() {
             @Override
             public boolean areItemsTheSame(@NonNull UserDocument oldItem, @NonNull UserDocument newItem) {
-                return oldItem.id == newItem.id;
+                return oldItem.id.equals(newItem.id);
             }
 
             @Override
@@ -59,6 +63,9 @@ public class UserDocumentAdapter extends ListAdapter<UserDocumentAdapter.UserDoc
                 }
             }
         });
+        for(OnBindView onBind : this.onBind) {
+            onBind.onBind(user, holder);
+        }
     }
 
     public void setButtonText(String text) {
@@ -66,6 +73,9 @@ public class UserDocumentAdapter extends ListAdapter<UserDocumentAdapter.UserDoc
     }
     public void setOnClickListener(UserDocumentAdapter.OnClickListener onClick) {
         this.onClick.add(onClick);
+    }
+    public void setOnBind(UserDocumentAdapter.OnBindView onBind) {
+        this.onBind.add(onBind);
     }
 
 
