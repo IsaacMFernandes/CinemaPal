@@ -7,30 +7,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.DiscoverFilm;
+import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
 public class DiscoverAdapter extends BaseAdapter
 {
-    private ArrayList<DiscoverFilm> discoverFilms;
+    private ArrayList<Film> discoverFilms;
     private Context context;
 
-    public DiscoverAdapter(ArrayList<DiscoverFilm> films, Context context)
+    public DiscoverAdapter(ArrayList<Film> films, Context context)
     {
         discoverFilms = films;
         this.context = context;
     }
 
-    public void setDiscoverFilms(ArrayList<DiscoverFilm> films)
+    public void setDiscoverFilms(ArrayList<Film> films)
     {
         discoverFilms = films;
         notifyDataSetChanged();
@@ -59,7 +53,7 @@ public class DiscoverAdapter extends BaseAdapter
             v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.discover_movie_item, viewGroup, false);
         }
 
-        DiscoverFilm film = (DiscoverFilm) getItem(i);
+        Film film = (Film) getItem(i);
         ImageView image = v.findViewById(R.id.explore_movie_img);
 
         Picasso.get().load(film.getImageURL()).into(image);

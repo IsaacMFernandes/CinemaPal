@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,7 @@ import com.daprlabs.cardstack.SwipeDeck;
 
 import java.util.ArrayList;
 
-import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalRepository;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalViewModel;
-import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.DiscoverFilm;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
 /**
@@ -32,7 +29,7 @@ public class ExploreFragment extends Fragment {
     private CinemaPalViewModel viewModel;
     private TextView titleView;
     private ImageView exploreImage;
-    private ArrayList<DiscoverFilm> discoverFilms;
+    private ArrayList<Film> discoverFilms;
     private SwipeDeck cardDeck;
 
     public ExploreFragment() {
@@ -62,19 +59,8 @@ public class ExploreFragment extends Fragment {
         titleView = view.findViewById(R.id.explore_movie_title);
 
         discoverFilms = new ArrayList<>();
+        discoverFilms = viewModel.getDiscoverFilms();
         cardDeck = (SwipeDeck) view.findViewById(R.id.swipe_deck);
-
-        // Add films to discoverFilms
-        DiscoverFilm film1 = new DiscoverFilm("https://image.tmdb.org/t/p/w500/wdE6ewaKZHr62bLqCn7A2DiGShm.jpg");
-        DiscoverFilm film2 = new DiscoverFilm("https://image.tmdb.org/t/p/w500/xGrTm3J0FTafmuQ85vF7ZCw94x6.jpg");
-        DiscoverFilm film3 = new DiscoverFilm("https://image.tmdb.org/t/p/w500/zBkHCpLmHjW2uVURs5uZkaVmgKR.jpg");
-        DiscoverFilm film4 = new DiscoverFilm("https://image.tmdb.org/t/p/w500/ygPTrycbMSFDc5zUpy4K5ZZtQSC.jpg");
-        DiscoverFilm film5 = new DiscoverFilm("https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg");
-        discoverFilms.add(film1);
-        discoverFilms.add(film2);
-        discoverFilms.add(film3);
-        discoverFilms.add(film4);
-        discoverFilms.add(film5);
 
         final DiscoverAdapter adapter = new DiscoverAdapter(discoverFilms, getContext());
         cardDeck.setAdapter(adapter);

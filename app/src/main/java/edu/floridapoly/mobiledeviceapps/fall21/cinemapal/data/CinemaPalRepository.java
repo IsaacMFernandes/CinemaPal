@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,16 +54,13 @@ public class CinemaPalRepository
         celebrityDao = database.celebrityDao();
     }
 
-    private String discoverTitle;
-    private String discoverDescription;
-    private String discoverImageURL;
-    private double discoverMovieRating;
+    private ArrayList<Film> discoverFilms = new ArrayList<>();
 
-    public Film getDiscoverFilm()
+    public ArrayList<Film> getDiscoverFilms()
     {
         try {
             new getDiscoverFilm().execute();
-            return new Film(discoverTitle, discoverDescription, discoverImageURL, discoverMovieRating);
+            return discoverFilms;
         } catch (Exception e) {
             Log.d("ExploreFragment", "Something bad happened when trying to run the async task for getDiscoverMovie");
         }
@@ -115,27 +113,30 @@ public class CinemaPalRepository
                 try {
                     JSONObject jsonResponse = new JSONObject(responseText);
                     JSONArray results = jsonResponse.getJSONArray("results");
-                    JSONObject firstResult = results.getJSONObject(0);
 
-                    Log.d("ExploreFragment", "Discover Movie First result json is " + firstResult.toString());
+                    Log.d("ExploreFragment", "Length of results is " + results.length());
 
-                    String posterPath = firstResult.getString("poster_path");
-                    Log.d("ExploreFragment", "Poster Path is " + posterPath);
-                    discoverImageURL = "https://image.tmdb.org/t/p/w500" + posterPath;
-                    Log.d("ExploreFragment", "Discover Movie Image URL is " + discoverImageURL);
+                    for (int i = 0; i < results.length(); i++)
+                    {
+                        JSONObject JSONFilm = results.getJSONObject(i);
 
-                    String title = firstResult.getString("title");
-                    Log.d("ExploreFragment", "Discover Movie Title is " + title);
-                    discoverTitle = title;
+                        Log.d("ExploreFragment", "Discover Movie result json is " + JSONFilm.toString());
 
-                    String description = firstResult.getString("overview");
-                    Log.d("ExploreFragment", "Discover Movie Description is " + description);
-                    discoverDescription = description;
+                        String posterPath = JSONFilm.getString("poster_path");
+                        String title = JSONFilm.getString("title");
+                        String description = JSONFilm.getString("overview");
+                        double rating = JSONFilm.getDouble("vote_average");
 
-                    double rating = firstResult.getDouble("vote_average");
-                    Log.d("ExploreFragment", "Discover Movie Rating is " + rating);
-                    discoverMovieRating = rating;
+                        String imageURL = "https://image.tmdb.org/t/p/w500" + posterPath;
 
+                        Log.d("ExploreFragment", "Poster Path is " + posterPath);
+                        Log.d("ExploreFragment", "Discover Image URL is " + imageURL);
+                        Log.d("ExploreFragment", "Discover Movie Title is " + title);
+                        Log.d("ExploreFragment", "Discover Movie Description is " + description);
+                        Log.d("ExploreFragment", "Discover Movie Rating is " + rating);
+
+                        discoverFilms.add(new Film(title, description, imageURL, rating));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

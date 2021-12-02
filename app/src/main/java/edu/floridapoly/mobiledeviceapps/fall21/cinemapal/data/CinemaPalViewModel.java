@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalRepository;
@@ -35,9 +37,9 @@ public class CinemaPalViewModel extends AndroidViewModel
         return likedFilms;
     }*/
 
-    public Film getDiscoverFilm ()
+    public ArrayList<Film> getDiscoverFilms ()
     {
-        return repository.getDiscoverFilm();
+        return repository.getDiscoverFilms();
     }
 
     public List<Film> getFilms()
