@@ -1,4 +1,4 @@
-package edu.floridapoly.mobiledeviceapps.fall21.cinemapal;
+package edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data;
 
 import android.app.Application;
 
@@ -18,6 +18,7 @@ import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.maps.Like
 
 public class CinemaPalViewModel extends AndroidViewModel
 {
+
     private CinemaPalRepository repository;
     //private LiveData<List<LikedFilms>> likedFilms;
 
@@ -33,6 +34,11 @@ public class CinemaPalViewModel extends AndroidViewModel
     {
         return likedFilms;
     }*/
+
+    public Film getDiscoverFilm ()
+    {
+        return repository.getDiscoverFilm();
+    }
 
     public List<Film> getFilms()
     {

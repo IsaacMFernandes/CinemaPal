@@ -13,17 +13,17 @@ public class Film
     private int filmGenreId;
 
     // 1 - 10 or 1-100 or 1-5
-    private short rating;
+    private double rating;
     private String title;
     private String description;
-    private String director;
+    private String imageURL;
 
-    public Film(String title, String description, String director, short rating)
+    public Film(String title, String description, String imageURL, double rating)
     {
         this.title = title;
         this.description = description;
-        this.director = director;
         this.rating = rating;
+        this.imageURL = imageURL;
     }
 
     public int getFilmId() {
@@ -39,6 +39,6 @@ public class Film
 
     public String getTitle() { return title; }
     public String getDescription() { return description; }
-    public String getDirector() { return director; }
-    public short getRating() { return rating; }
+    public double getRating() { return rating; }
+    public String getImageURL() { return imageURL; }
 }

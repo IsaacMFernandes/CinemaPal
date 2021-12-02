@@ -1,97 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExploreFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
-    <EditText
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/genre_spinner"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="50dp"
+        android:spinnerMode="dropdown" />
 
-    <FrameLayout
-        android:layout_margin="20dp"
-        android:id="@+id/movie_container"
-        android:layout_width="match_parent"
+    <com.daprlabs.cardstack.SwipeFrameLayout
+        android:layout_width="318dp"
+        android:layout_height="458dp">
+
+        <com.daprlabs.cardstack.SwipeDeck
+            android:id="@+id/swipe_deck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            app:card_spacing="10dp"
+            app:max_visible="3"
+            app:render_above="true"
+            app:rotation_degrees="15"/>
+
+    </com.daprlabs.cardstack.SwipeFrameLayout>
+
+    <TextView
+        android:id="@+id/explore_movie_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/sample_movie_poster">
+        android:text="Movie Title"
+        android:textSize="24sp" />
 
-
-
-    </FrameLayout>
-
-
-</androidx.appcompat.widget.LinearLayoutCompat>-->
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-    android:background="@android:color/holo_green_light">
-
-<TextView
-android:id="@+id/explore_header"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:text="Explore"
-    android:textSize="34sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-<ImageButton
-android:id="@+id/explore_movie_img"
-android:layout_width="318dp"
-android:layout_height="458dp"
-android:layout_marginTop="32dp"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toBottomOf="@+id/explore_header"
-tools:src="@tools:sample/avatars" />
-
-<TextView
-android:id="@+id/explore_movie_title"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:text="Movie Title - Year"
-android:textSize="24sp"
-app:layout_constraintEnd_toEndOf="@+id/explore_movie_img"
-app:layout_constraintStart_toStartOf="@+id/explore_movie_img"
-app:layout_constraintTop_toBottomOf="@+id/explore_movie_img" />
-
-<Button
-android:id="@+id/swipe_right"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="right"
-android:textSize="24sp"
-app:layout_constraintBottom_toBottomOf="@+id/explore_movie_img"
-app:layout_constraintEnd_toEndOf="@+id/explore_movie_img"
-app:layout_constraintStart_toEndOf="@+id/explore_movie_img"
-app:layout_constraintTop_toTopOf="@+id/explore_movie_img" />
-
-<Button
-android:id="@+id/swipe_left"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="left"
-android:textSize="24sp"
-app:layout_constraintBottom_toBottomOf="@+id/explore_movie_img"
-app:layout_constraintEnd_toStartOf="@+id/explore_movie_img"
-app:layout_constraintStart_toStartOf="@+id/explore_movie_img"
-app:layout_constraintTop_toTopOf="@+id/explore_movie_img" />
-
-<Button
-android:id="@+id/button2"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginEnd="16dp"
-android:text="Genre.."
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintTop_toTopOf="@+id/explore_header" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

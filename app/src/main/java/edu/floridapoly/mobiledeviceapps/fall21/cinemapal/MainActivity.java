@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.CinemaPalViewModel;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.Film;
 
 /*
@@ -47,9 +48,6 @@ public class MainActivity extends AppCompatActivity
     // This variable will be used to call methods relating to the bottom navigation view
     private BottomNavigationView bottomNav;
 
-    // View Model
-    //private CinemaPalViewModel viewModel;
-
     // A method to define what happens when the main activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity
 
         // Setting a listener for when a bottom item is selected
         bottomNav.setOnItemSelectedListener(navListener);
-        //viewModel = new ViewModelProvider(this).get(CinemaPalViewModel.class);
 
         /*
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,

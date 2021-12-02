@@ -1,13 +1,26 @@
 package edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data;
 
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.MainActivity;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.CinemaPalDatabase;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.daos.*;
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.*;
@@ -17,6 +30,8 @@ import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.maps.Like
 
 public class CinemaPalRepository
 {
+    private static final String API_KEY = "97b3e258357751749877448cf8d366f9";
+
     // Help run background tasks for database methods
     private ExecutorService service;
 
@@ -38,11 +53,99 @@ public class CinemaPalRepository
         celebrityDao = database.celebrityDao();
     }
 
-    // Return a live data list of users, each with a playlist of liked films
-    //public LiveData<List<LikedFilms>> getLikedFilms()
-    //{
-        //return likedFilms;
-    //}
+    private String discoverTitle;
+    private String discoverDescription;
+    private String discoverImageURL;
+    private double discoverMovieRating;
+
+    public Film getDiscoverFilm()
+    {
+        try {
+            new getDiscoverFilm().execute();
+            return new Film(discoverTitle, discoverDescription, discoverImageURL, discoverMovieRating);
+        } catch (Exception e) {
+            Log.d("ExploreFragment", "Something bad happened when trying to run the async task for getDiscoverMovie");
+        }
+        return null;
+    }
+
+    private class getDiscoverFilm extends AsyncTask
+    {
+        @Override
+        protected Object doInBackground(Object[] objects)
+        {
+            StringBuffer response = new StringBuffer();
+
+            try {
+                String urlString = "https://api.themoviedb.org/3/discover/movie";
+                urlString += "?api_key=" + API_KEY;
+                urlString += "&sort_by=popularity.desc";
+                URL url = new URL(urlString);
+
+                Log.d("ExploreFragment", "Discover URL is " + urlString);
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(5000);
+                conn.setConnectTimeout(5000);
+                conn.setRequestMethod("GET");
+
+                int responseCode = conn.getResponseCode();
+
+                Log.d("ExploreFragment", "Response Code is " + responseCode);
+
+                if (responseCode == HttpURLConnection.HTTP_OK)
+                {
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(conn.getInputStream()));
+
+                    String output;
+
+                    while ((output = in.readLine()) != null)
+                        response.append(output);
+                    in.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (response != null)
+            {
+                String responseText = response.toString();
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseText);
+                    JSONArray results = jsonResponse.getJSONArray("results");
+                    JSONObject firstResult = results.getJSONObject(0);
+
+                    Log.d("ExploreFragment", "Discover Movie First result json is " + firstResult.toString());
+
+                    String posterPath = firstResult.getString("poster_path");
+                    Log.d("ExploreFragment", "Poster Path is " + posterPath);
+                    discoverImageURL = "https://image.tmdb.org/t/p/w500" + posterPath;
+                    Log.d("ExploreFragment", "Discover Movie Image URL is " + discoverImageURL);
+
+                    String title = firstResult.getString("title");
+                    Log.d("ExploreFragment", "Discover Movie Title is " + title);
+                    discoverTitle = title;
+
+                    String description = firstResult.getString("overview");
+                    Log.d("ExploreFragment", "Discover Movie Description is " + description);
+                    discoverDescription = description;
+
+                    double rating = firstResult.getDouble("vote_average");
+                    Log.d("ExploreFragment", "Discover Movie Rating is " + rating);
+                    discoverMovieRating = rating;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("ExploreFragment", "Response is null");
+            }
+
+            return null;
+        }
+    }
 
     public List<Film> getFilms() { return filmDao.getFilms(); }
 

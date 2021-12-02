@@ -29,7 +29,7 @@ public class FilmAdapter extends ListAdapter<Film, FilmAdapter.FilmHolder>
         public boolean areContentsTheSame(@NonNull Film oldItem, @NonNull Film newItem) {
             return oldItem.getTitle().equals(newItem.getTitle()) &&
                     oldItem.getDescription().equals(newItem.getDescription()) &&
-                    oldItem.getDirector().equals(newItem.getDirector()) &&
+                    oldItem.getImageURL().equals(newItem.getImageURL()) &&
                     oldItem.getFilmGenreId() == newItem.getFilmGenreId() &&
                     oldItem.getRating() == newItem.getRating();
         }

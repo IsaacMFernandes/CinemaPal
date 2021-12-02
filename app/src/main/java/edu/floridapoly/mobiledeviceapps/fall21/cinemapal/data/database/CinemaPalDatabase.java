@@ -17,7 +17,7 @@ import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.
 import edu.floridapoly.mobiledeviceapps.fall21.cinemapal.data.database.entities.crossref.*;
 
 @Database(entities = {Celebrity.class, Film.class, Genre.class, User.class,
-        FilmCelebrityCrossRef.class, UserFilmCrossRef.class}, version = 1)
+        FilmCelebrityCrossRef.class, UserFilmCrossRef.class}, version = 2)
 public abstract class CinemaPalDatabase extends RoomDatabase
 {
     private static CinemaPalDatabase instance;
@@ -60,9 +60,9 @@ public abstract class CinemaPalDatabase extends RoomDatabase
         @Override
         protected Void doInBackground(Void...Voids)
         {
-            filmDao.insert(new Film("Shangchi", "Superhero movie", "Marvel Studios", (short) 10));
-            filmDao.insert(new Film("Finding Nemo", "Fish gets lost", "Idk Disney", (short) 8));
-            filmDao.insert(new Film("Hallmark movie", "People fall in love", "Hallmark", (short) 4));
+            filmDao.insert(new Film("Shangchi", "Superhero movie", "Marvel Studios", 10.1));
+            filmDao.insert(new Film("Finding Nemo", "Fish gets lost", "Idk Disney", 8.2));
+            filmDao.insert(new Film("Hallmark movie", "People fall in love", "Hallmark", 4.3));
             return null;
         }
     }
